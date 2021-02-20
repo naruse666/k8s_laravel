@@ -1,0 +1,26 @@
+# project pv
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: project-pv
+spec:
+  storageClassName: manual
+  capacity: 
+    storage: 100M
+  accessModes: 
+    - ReadWriteOnce
+  hostPath:
+    path: /home/ec2-user/worker
+---
+# project pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: project-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10M

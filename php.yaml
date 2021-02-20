@@ -1,0 +1,54 @@
+# PHP deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-fpm
+  labels:
+    app: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      containers:
+        - name: php-fpm 
+          image: 451153100141.dkr.ecr.ap-northeast-1.amazonaws.com/portfolio_php
+          imagePullPolicy: IfNotPresent
+          workingDir: /work
+          ports: 
+            - containerPort: 8080
+              name: php-server
+              protocol: TCP
+          volumeMounts:
+          - name: socket
+            mountPath: /var/run/php-fpm
+          - name: project
+            mountPath: /work
+      volumes:
+        - name: socket
+          persistentVolumeClaim:
+            claimName: fpm-pvc
+        - name: project
+          persistentVolumeClaim:
+            claimName: project-pvc
+---
+# PHP svc
+apiVersion: v1
+kind: Service
+metadata: 
+  name: php
+  labels:
+    app: php
+spec:
+  ports:
+    - port: 8080
+      targetPort: php-server
+      protocol: TCP
+  type: NodePort
+  selector: 
+    app: php

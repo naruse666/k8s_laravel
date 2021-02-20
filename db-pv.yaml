@@ -1,0 +1,26 @@
+# db pv
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-pv
+spec: 
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/ec2-user/db-storage
+---
+# db pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: db-pvc
+spec: 
+  storageClassName: manual
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests: 
+      storage: 3Gi
