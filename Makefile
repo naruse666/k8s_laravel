@@ -50,10 +50,6 @@ del:
 	@make pvdel
 	@make unhelm
 
-
-# composer:
-# 	@make exec | composer update -> .env -> key:generate -> migrate
-
 lb:
 	echo "load balancer name is"
 	kubectl get svc ingress-nginx-ingress-controller | awk '{print $$4}' | tail -1
